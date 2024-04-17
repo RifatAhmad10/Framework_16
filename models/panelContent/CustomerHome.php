@@ -55,51 +55,75 @@ class CustomerHome extends PanelModel
     {
         $this->panelHead_2 = '<h3>Welcome to your Customer Home Page</h3>';
     }
-
     public function getUserNr($userEmailId){
         $sql= 'SELECT UserNr FROM User WHERE UserId= "'.$userEmailId.'";';
         $rs=$this->db->query($sql);
         return $rs->fetch_assoc()['UserNr'];
     }
+  public function printOrderTable($userOrdersRs){
+    $html="<table>";
+    foreach ($userOrdersRs as $dataRow)  {
 
-    public function printOrderTable($userOrdersRs){
-        $html = "<table>";
-        foreach ($userOrdersRs as $dataRow) {
-            $html .= "<tr><td>".$dataRow["dish"]."</td></tr>";    
-        }
-        $html .= "</table>";
-        $this->panelContent_2 .= $html;
-    }
+        $html.="<tr>";
 
-    public function processOrder() {
-        $dishId = $_POST["add_dish_id"];
-        $userEmailId = $this->user->getUserID();
-        $userNr = $this->getUserNr($userEmailId);
-        echo $userNr;
-
-        try {
-            $this->saveOrder($userNr, $dishId);
-        } catch(Exception $e) {
-            // Handle exception if necessary
-        }
+        $html.="<td>";
+        $html.=$dataRow["dish"];
+        $html.="</td>";
         
-        $userOrdersRs = $this->getUserOrders($userNr);
-        $this->printOrderTable($userOrdersRs);
+        $html.="</tr>";    
+    }
+    $html.="</table>";
+    $this->panelContent_2.=$html;
+
+  }
+    public function processOrder() {
+        $dishId=$_POST["add_dish_id"];
+
+        $userEmailId=$this->user->getUserID();
+        $userNr= $this->getUserNr($userEmailId);
+        echo $userNr;
+            try{
+
+            
+        $this->saveOrder($userNr, $dishId);
+            }
+            catch(Exception $e)
+            {}
+            
+            $userOrdersRs=$this->getUserOrders($userNr);
+        $this->printOrderTable( $userOrdersRs);
+        
+
+
+
         $this->panelContent_2 .= '<p>Dish with ID '.$dishId.' added successfully!</p>';
+        // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
+
+        //get from POst, the data
+        //get userNr from UserTable with userEmailId
+        //access db, make new order
+        //print the orders
+
     }
 
     public function saveOrder($userNr, $dishId)
     {
-        $sql = "INSERT INTO `order` (`customer`, `dish`) VALUES ($userNr, $dishId);";
-        $this->db->query($sql);
+        $sql = "INSERT INTO `order` (`customer`, `dish`) VALUES($userNr,$dishId);";
+         $this->db->query($sql);
+
+    }
+
+    public function resetOrder($userNr)
+    {
+        $sql = "DELETE FROM `order` WHERE customer=".$userNr.";";
+        $this->db->query($sql);     
     }
 
     public function getUserOrders($userNr){
-        $sql = "SELECT * FROM `order` WHERE customer=$userNr;";
-        $rs = $this->db->query($sql);
+        $sql="SELECT * FROM `order`WHERE customer=$userNr;";
+        $rs=$this->db->query($sql);
         return $rs;
     }
-
     /**
      * Set the Panel 2 text content 
      */       
@@ -112,6 +136,14 @@ class CustomerHome extends PanelModel
                 <input type="text" name="dish_id" id="search" placeholder="Enter Dish ID">
                 <input type="submit" value="Search">
             </form>';
+
+        if(isset($_POST["reset_dish"]))
+        {
+            $userEmailId=$this->user->getUserID();
+            $userNr= $this->getUserNr($userEmailId);
+            $this->resetOrder($userNr);
+
+        }
 
         if(isset($_POST["dish_id"]))
         {
@@ -126,24 +158,38 @@ class CustomerHome extends PanelModel
                         foreach($_POST["chosen_items"] as $i)
                         {
                             $this->panelContent_2.='<input type="hidden" name="chosen_items[]" value="'.$i.'">';
+
                         }
                     }
 
-                    $this->panelContent_2.='<input type="hidden" name="chosen_items[]" value="'.$_POST["dish_id"].'">
-                    <input type="submit" name="add_dish" value="Add">
-                </form>';
+                    $this->panelContent_2.='<input type="hidden" name="chosen_items[]" value="'.$_POST["dish_id"].'">';
+   
+                    
+
+            if(isset($_POST["show_all"]))
+            {
+                $this->panelContent_2 .='<input type="hidden" name="chosen_items[]" value="'.$_POST["dish_id"].'">';
+            }
+
+            $this->panelContent_2 .= '<input type="submit" name="add_dish" value="Add">
+                                    
+
+                                        </form>';
         }
 
         if(isset($_POST["add_dish"]))
         {
+            // Handle adding the dish here
+            //var_dump($_POST);
             $this->processOrder();
         }
 
         if(isset($_POST["show_all"]))
         {
+
             if(isset($_POST["chosen_items"]))
             {
-                $added_dish_ids = $_POST["chosen_items"];
+                $added_dish_ids = $_POST["chosen_items"]; // $this->retrieveAddedDishIDs();
                 $this->panelContent_2 .= '<h3>Added Dish IDs:</h3>';
                 $this->panelContent_2 .= '<ul>';
                 foreach($added_dish_ids as $dish_id)
@@ -152,15 +198,24 @@ class CustomerHome extends PanelModel
                 }
                 $this->panelContent_2 .= '</ul>';
             }
+
         }
 
         $this->panelContent_2 .= '
-            <form action="index.php?pageID=home" method="POST" style="display:inline;">
+            <form action="index.php?pageID=home" method="POST">
                 <input type="submit" name="show_all" value="Show All">
-            </form>
-            <form action="index.php?pageID=home" method="POST" style="display:inline;">
-                <input type="submit" name="reset_orders" value="Reset">
+                <input type="submit" name="reset_dish" value="Reset">
             </form>';
+    }
+
+    /**
+     * Retrieve added dish IDs from the database
+     */ 
+    private function retrieveAddedDishIDs() 
+    {
+        // Implement logic to retrieve added dish IDs from the database
+        // For demonstration purposes, returning a hardcoded array
+        return ['1', '2', '3', '4'];
     }
 
     /**
@@ -179,8 +234,6 @@ class CustomerHome extends PanelModel
         $menuTable = new MenuTable($this->db);
         $rs = $menuTable->retrieveMenu();
         $this->panelContent_3 .= HelperHTML::generateTABLE($rs);
+        ///"<p>To set up this application read the following <a href='readme/installation.php' target='_blank'>SETUP INSTRUCTIONS</a>.</p>";   
     }         
 }
-
-// HelperHTML and other classes should be defined elsewhere in your project.
-?>
