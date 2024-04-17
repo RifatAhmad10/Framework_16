@@ -102,10 +102,18 @@ class CustomerHome extends PanelModel
         if(isset($_POST["add_dish"]))
         {
             // Handle adding the dish here
-            var_dump($_POST);
+            //var_dump($_POST);
+            $dishId=$_POST["add_dish_id"];
+            $userId=$this->user->getmyuid();
+            echo $dishId;
+            echo $userId;
 
-            $this->panelContent_2 .= '<p>Dish with ID '.$_POST["add_dish_id"].' added successfully!</p>';
+            $this->panelContent_2 .= '<p>Dish with ID '.$dishId.' added successfully!</p>';
             // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
+
+            //get from POst, the data
+            //access db, make new order
+            //print the orders
         }
 
         if(isset($_POST["show_all"]))
@@ -154,6 +162,9 @@ class CustomerHome extends PanelModel
      */       
     public function setPanelContent_3()
     { 
-        $this->panelContent_3 = "<p>To set up this application read the following <a href='readme/installation.php' target='_blank'>SETUP INSTRUCTIONS</a>.</p>";   
+        $menuTable = new MenuTable($this->db);
+        $rs = $menuTable->retrieveMenu();
+        $this->panelContent_3 .= HelperHTML::generateTABLE($rs);
+        ///"<p>To set up this application read the following <a href='readme/installation.php' target='_blank'>SETUP INSTRUCTIONS</a>.</p>";   
     }         
 }
