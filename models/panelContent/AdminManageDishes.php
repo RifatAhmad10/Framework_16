@@ -74,6 +74,9 @@ class AdminManageDishes extends PanelModel {
                 break;
             case "viewDishes":  // menu item handler
                 $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+                 $menuTable = new MenuTable($this->db);
+        $rs = $menuTable->retrieveMenu();
+        $this->panelContent_2 .= HelperHTML::generateTABLE($rs);
                 break;
             case "editDishes":  // menu item handler
                 $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
