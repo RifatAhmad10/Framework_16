@@ -22,12 +22,12 @@ class CustomerHome extends PanelModel
      * @param String $pageTitle  The page Title
      * @param String $pageHead   The Page Heading
      * @param String $pageID     The currently selected Page ID
-     */  
-    function __construct($user, $db, $postArray, $pageTitle, $pageHead, $pageID)
-    {  
+     */
+    public function __construct($user, $db, $postArray, $pageTitle, $pageHead, $pageID)
+    {
         $this->modelType = 'CustomerHome';
         parent::__construct($user, $db, $postArray, $pageTitle, $pageHead, $pageID);
-    } 
+    }
 
     /**
      * Set the Panel 1 heading 
@@ -55,7 +55,64 @@ class CustomerHome extends PanelModel
     {
         $this->panelHead_2 = '<h3>Welcome to your Customer Home Page</h3>';
     }
+    public function getUserNr($userEmailId){
+        $sql= 'SELECT UserNr FROM User WHERE UserId= "'.$userEmailId.'";';
+        $rs=$this->db->query($sql);
+        return $rs->fetch_assoc()['UserNr'];
+    }
+  public function printOrderTable($userOrdersRs){
+    $html="<table>";
+foreach ($userOrdersRs as $dataRow)  {
 
+    $html.="<tr>";
+    $html.="<td>";
+    $html.=$dataRow["dish"];
+    $html.="</td>";
+    $html.="</tr>";
+    $this->panelContent_2.=$html;
+
+    
+}
+$html.="</table>";
+
+  }
+    public function processOrder() {
+        $dishId=$_POST["add_dish_id"];
+
+        $userEmailId=$this->user->getUserID();
+        $userNr= $this->getUserNr($userEmailId);
+        echo $userNr;
+
+        $this->saveOrder($userNr, $dishId);
+
+        $userOrdersRs=$this->getUserOrders($userNr);
+        $this->printOrderTable( $userOrdersRs);
+        
+
+
+
+        $this->panelContent_2 .= '<p>Dish with ID '.$dishId.' added successfully!</p>';
+        // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
+
+        //get from POst, the data
+        //get userNr from UserTable with userEmailId
+        //access db, make new order
+        //print the orders
+
+    }
+
+    public function saveOrder($userNr, $dishId)
+    {
+        $sql = "INSERT INTO `order` (`customer`, `dish`) VALUES($userNr,$dishId);";
+         $this->db->query($sql);
+
+    }
+
+    public function getUserOrders($userNr){
+        $sql="SELECT * FROM `order`WHERE customer=$userNr;";
+        $rs=$this->db->query($sql);
+        return $rs;
+    }
     /**
      * Set the Panel 2 text content 
      */       
@@ -103,17 +160,7 @@ class CustomerHome extends PanelModel
         {
             // Handle adding the dish here
             //var_dump($_POST);
-            $dishId=$_POST["add_dish_id"];
-            $userId=$this->user->getmyuid();
-            echo $dishId;
-            echo $userId;
-
-            $this->panelContent_2 .= '<p>Dish with ID '.$dishId.' added successfully!</p>';
-            // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
-
-            //get from POst, the data
-            //access db, make new order
-            //print the orders
+            $this->processOrder();
         }
 
         if(isset($_POST["show_all"]))
