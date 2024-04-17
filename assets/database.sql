@@ -93,6 +93,32 @@ INSERT INTO `county` VALUES (1,'Antrim'),(2,'Armagh'),(3,'Carlow'),(4,'Cavan'),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order`
+--
+
+DROP TABLE IF EXISTS `order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order` (
+  `customer` int(11) NOT NULL,
+  `dish` int(11) NOT NULL,
+  PRIMARY KEY (`customer`,`dish`),
+  KEY `fk_dish_12_idx` (`dish`),
+  CONSTRAINT `fk_customer` FOREIGN KEY (`customer`) REFERENCES `user` (`UserNr`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dish_12` FOREIGN KEY (`dish`) REFERENCES `restaurantdishes` (`DishID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order`
+--
+
+LOCK TABLES `order` WRITE;
+/*!40000 ALTER TABLE `order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `restaurantdishes`
 --
 
@@ -189,4 +215,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-17 10:54:11
+-- Dump completed on 2024-04-17 11:35:30
