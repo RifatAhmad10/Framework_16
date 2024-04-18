@@ -141,7 +141,7 @@ class AdminController extends Controller  {
                         $data = $this->getPageContent($contentModel, $navigationModel);  // Get the page content from the models                 
                         $this->viewData = $data;  // Put the content array into a class property for diagnostic purposes
                         // Update the view
-                        include_once 'views/view_navbar_2_panel.php';  // Load the view                      
+                        include_once 'views/view_navbar_1_panel.php';  // Load the view                      
                         break; 
 
                     case "editDishes":

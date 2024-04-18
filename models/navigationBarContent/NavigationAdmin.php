@@ -94,6 +94,8 @@ class NavigationAdmin implements NavigationInterface {
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=manageUsers">Manage Users</a></li>';
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
                         $this->menuNav.= $dropdownMenuManageProducts;
+                        $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
+                        
 
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
                         break;
@@ -141,7 +143,7 @@ class NavigationAdmin implements NavigationInterface {
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=registerUsers">Register Users</a></li>';
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewUsers">View Users</a></li>';
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editUsers">Edit Users</a></li>';
-                        //$this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteUsers">Delete Users</a></li>';
+                        $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteUsers">Delete Users</a></li>';
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
                         break;           
                     
@@ -151,6 +153,7 @@ class NavigationAdmin implements NavigationInterface {
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editDishes">Edit Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=addDishes">Add Dishes</a></li>';
+                            $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
                             break;
 
@@ -159,6 +162,7 @@ class NavigationAdmin implements NavigationInterface {
                             //$this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editDishes">Edit Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=addDishes">Add Dishes</a></li>';
+                            $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
                             break;
 
@@ -167,6 +171,7 @@ class NavigationAdmin implements NavigationInterface {
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
                             //$this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editDishes">Edit Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=addDishes">Add Dishes</a></li>';
+                            $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
                             break;
 
@@ -176,7 +181,19 @@ class NavigationAdmin implements NavigationInterface {
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editDishes">Edit Dishes</a></li>';
                             //$this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=addDishes">Add Dishes</a></li>';
                             $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
+                            $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
+
                             break; 
+
+                        case "deleteDish":
+                                $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=home">Home</a></li>';
+                                $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
+                                $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=editDishes">Edit Dishes</a></li>';
+                                $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=addDishes">Add Dishes</a></li>';
+                               // $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
+                                $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=logout">Log Out</a></li>';
+                                break;
+
 
 
                     

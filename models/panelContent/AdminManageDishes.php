@@ -63,7 +63,7 @@ class AdminManageDishes extends PanelModel {
     }
 
     
-    
+
     /**
     * Set the Panel 1 text content 
     */ 
@@ -75,14 +75,17 @@ class AdminManageDishes extends PanelModel {
             case "viewDishes":  // menu item handler
                 $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
                  $menuTable = new MenuTable($this->db);
-        $rs = $menuTable->retrieveMenu();
-        $this->panelContent_2 .= HelperHTML::generateTABLE($rs);
+                $rs = $menuTable->retrieveMenu();
+                $this->panelContent_1 .= HelperHTML::generateTABLE($rs);
                 break;
             case "editDishes":  // menu item handler
-                $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+                $menuTable = new MenuTable($this->db);
+                $rs = $menuTable->retrieveMenu();
+                $this->panelContent_1 = HelperHTML::generateTABLE($rs);
+                
                 break;
             case "addDishes":  // menu item handler
-                $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+                $this->panelContent_1 = Form::addDishForm($this->pageID);
                 break;
             default:  // DEFAULT menu item handler
                 $this->panelContent_1 = "Panel 1 content for \$pageID <b>DEFAULT</b> menu item is under construction.";
@@ -128,11 +131,36 @@ class AdminManageDishes extends PanelModel {
             case "viewProducts":  // menu item handler
                 $this->panelContent_2 = "Panel 2 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
                 break;
-            case "editProduct":  // menu item handler
-                $this->panelContent_2 = "Panel 2 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+            case "editDishes":  // menu item handler
+                if(isset($_POST["submitDish"]))
+                {
+                    $menuTable = new MenuTable($this->db);
+                    $rs = $menuTable->updateDish($_POST["dishID"],$_POST["dishName"],$_POST["dishType"],$_POST["price"]);
+                    if ($rs ){ 
+                        $this-> panelContent_2 = "This dish has been updated";
+                    
+                    }else{
+                        $this-> panelContent_2 = "This dish has not been updates";
+                    
+                    }
+                    
+                }
+                $this->panelContent_2 .= Form::addDishForm($this->pageID);
                 break;
-            case "addProduct":  // menu item handler
-                $this->panelContent_2 = "Panel 2 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+            case "addDishes":  // menu item handler
+                if(isset($_POST["submitDish"]))
+                {
+                    $menuTable = new MenuTable($this->db);
+                    $rs = $menuTable->addDish($_POST["dishID"],$_POST["dishName"],$_POST["dishType"],$_POST["price"]);
+                    if ($rs ){ 
+                        $this-> panelContent_2 = "This dish has been added";
+                    
+                    }else{
+                        $this-> panelContent_2 = "This dish has not been added";
+                    
+                    }
+                    
+                }
                 break;
             default:  // DEFAULT menu item handler
                 $this->panelContent_2 = "Panel 2 content for \$pageID <b>DEFAULT</b> menu item is under construction.";

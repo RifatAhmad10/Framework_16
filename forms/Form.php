@@ -322,6 +322,18 @@ public static function form_register_customer($countyTable,$pageID){
         return $form;
     }
         
+    public static function addDishForm($pageID){
+        $form='<form method="post" action="index.php?pageID='.$pageID.'">';
+        $form.='<label for="dishID">Dish ID</label><input type="text" class="form-control" id="dishID" name="dishID">';
+        $form.='<label for="dishName">Dish name</label><input type="text" class="form-control" id="dishName" name="dishName">';
+        $form.='<label for="dishType">Dish type</label><input type="text" class="form-control" id="dishType" name="dishType">';
+        $form.='<label for="price">Dish price</label><input type="text" class="form-control" id="price" name="price">';
+
+        $form.='<button type="submit" class="btn btn-default" name="submitDish" value="addDish">Add Dish</button>';
+        $form.='</form>';
+        return $form;
+
+    }
     
     
 /**
