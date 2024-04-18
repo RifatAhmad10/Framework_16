@@ -11,6 +11,7 @@
 		"shd101wyy.markdown-preview-enhanced",
 		"yzhang.markdown-all-in-one",
 		"streetsidesoftware.code-spell-checker",
-		"cweijan.vscode-office"
+		"cweijan.vscode-office",
+		"bmewburn.vscode-intelephense-client"
 	]
 }
