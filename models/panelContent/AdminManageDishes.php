@@ -87,6 +87,13 @@ class AdminManageDishes extends PanelModel {
             case "addDishes":  // menu item handler
                 $this->panelContent_1 = Form::addDishForm($this->pageID);
                 break;
+            case "deleteDish":
+                $menuTable = new MenuTable($this->db);
+                $rs = $menuTable->retrieveMenu();
+                $this->panelContent_1 = HelperHTML::generateTABLE($rs);
+                
+
+                break;
             default:  // DEFAULT menu item handler
                 $this->panelContent_1 = "Panel 1 content for \$pageID <b>DEFAULT</b> menu item is under construction.";
                 break;
@@ -161,6 +168,23 @@ class AdminManageDishes extends PanelModel {
                     }
                     
                 }
+                   break;
+            case "deleteDish":  // menu item handler
+                if(isset($_POST["submitDish"]))
+                {
+                    $menuTable = new MenuTable($this->db);
+                    $rs = $menuTable->deleteDish($_POST["dishID"]);
+                    if ($rs ){ 
+                        $this-> panelContent_2 = "This dish has been deleted";
+                        
+                    }else{
+                        $this-> panelContent_2 = "This dish has not been deleted";
+                        
+                    }
+                    
+                }
+                $this->panelContent_2 .= Form::deleteDishForm($this->pageID);
+
                 break;
             default:  // DEFAULT menu item handler
                 $this->panelContent_2 = "Panel 2 content for \$pageID <b>DEFAULT</b> menu item is under construction.";

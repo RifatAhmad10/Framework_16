@@ -74,7 +74,25 @@ class menuTable extends TableEntity {
             return false;
         }
     }
+     
+    function deleteDish($id){
+        $this->SQL = "DELETE FROM `restaurantdishes` 
+                     WHERE `DishID` = '".mysqli_real_escape_string($this->db, $id)."'";
     
+        try {
+            $rs = $this->db->query($this->SQL);
+            if ($this->db->affected_rows === 0) {
+                throw new Exception("No dish found with ID $id, or no data was changed.");
+            }
+            return true;
+        } catch (Exception $e) {
+            // Catch any type of exception, including cases where no rows are updated
+            $this->MySQLiErrorNr = $e->getCode();
+            $this->MySQLiErrorMsg = $e->getMessage();
+            return false;
+        }
+
+    }
     
     
     function retrieveMenu($id=0)

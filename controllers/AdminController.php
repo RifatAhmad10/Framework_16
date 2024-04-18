@@ -165,6 +165,17 @@ class AdminController extends Controller  {
                         // Update the view
                         include_once 'views/view_navbar_2_panel.php';  // Load the view                      
                         break; 
+
+                        case "deleteDish":
+                            // Create objects to generate view content
+                            $contentModel = new AdminManageDishes($this->user, $this->db, $this->postArray, $this->pageTitle, strtoupper('deleteDish'), 'deleteDish');
+                            $navigationModel = new NavigationAdmin($this->user, 'deleteDish');
+                            array_push($this->controllerObjects, $navigationModel, $contentModel);
+                            $data = $this->getPageContent($contentModel, $navigationModel);  // Get the page content from the models                 
+                            $this->viewData = $data;  // Put the content array into a class property for diagnostic purposes
+                            // Update the view
+                            include_once 'views/view_navbar_2_panel.php';  // Load the view                      
+                            break; 
 // Manage products handlers
 case "manageProducts":
     // Create objects to generate view content

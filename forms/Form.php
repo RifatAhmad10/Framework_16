@@ -375,6 +375,15 @@ public static function form_confirm($pageID,$btnText,$choice){
         $form.='</form>';
         return $form;
 }    
+
+public static function deleteDishForm($pageID){
+    $form='<form method="post" action="index.php?pageID='.$pageID.'">';
+    $form.='<label for="dishID">Dish ID</label><input type="text" class="form-control" id="dishID" name="dishID">';
+
+    $form.='<button type="submit" class="btn btn-default" name="submitDish" value="deleteDish">Delete Dish</button>';
+    $form.='</form>';
+    return $form;
+}
    
 
 
