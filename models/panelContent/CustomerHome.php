@@ -34,7 +34,7 @@ class CustomerHome extends PanelModel
      */
     public function setPanelHead_1()
     {
-        $this->panelHead_1 = '<h3>Web Application Framework</h3>';
+        $this->panelHead_1 = '<h3>Restaurant Takeaway Menu- Phone No:089 477 2046</h3>';
     }
     
     /**
@@ -53,7 +53,7 @@ class CustomerHome extends PanelModel
      */
     public function setPanelHead_2()
     {
-        $this->panelHead_2 = '<h3>Welcome to your Customer Home Page</h3>';
+        $this->panelHead_2 = '<h3>Enter your choice:</h3>';
     }
     public function getUserNr($userEmailId){
         $sql= 'SELECT UserNr FROM User WHERE UserId= "'.$userEmailId.'";';
@@ -96,8 +96,45 @@ class CustomerHome extends PanelModel
 
 
 
-        $this->panelContent_2 .= '<p>Dish with ID '.$dishId.' added successfully!</p>';
-        // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
+        // Prepare the SQL query
+$sql = "SELECT 
+            rd.DishID, 
+            rd.DishName, 
+            rd.DishType, 
+            rd.Price
+        FROM 
+            `order` o
+        INNER JOIN 
+            `restaurantdishes` rd ON o.Dish = rd.DishID
+        WHERE 
+            o.customer = $userNr";
+
+try {
+    // Execute the query
+    $result = $this->db->query($sql);
+
+    // Check if we have results
+    if ($result->num_rows > 0) {
+        // Initialize the panel content
+        $this->panelContent_2 = '<h2>Ordered Dishes Details:</h2>';
+
+        // Loop through each result and append details
+        while ($row = $result->fetch_assoc()) {
+            $this->panelContent_2 .= '<p>Dish with ID ' . $row['DishID'] . ':</p>';
+            $this->panelContent_2 .= '<ul>';
+            $this->panelContent_2 .= '<li>Name: ' . htmlspecialchars($row['DishName']) . '</li>';
+            $this->panelContent_2 .= '<li>Type: ' . htmlspecialchars($row['DishType']) . '</li>';
+            $this->panelContent_2 .= '<li>Price: $' . number_format($row['Price'], 2) . '</li>';
+            $this->panelContent_2 .= '</ul>';
+        }
+    } else {
+        $this->panelContent_2 = '<p>No dishes found for customer 1.</p>';
+    }
+} catch (Exception $e) {
+    // Handle exceptions such as connection errors
+    $this->panelContent_2 = 'Error fetching dishes: ' . $e->getMessage();
+}
+
 
         //get from POst, the data
         //get userNr from UserTable with userEmailId
