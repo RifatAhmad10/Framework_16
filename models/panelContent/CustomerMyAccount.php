@@ -48,7 +48,7 @@ class CustomerMyAccount extends PanelModel
         // Assuming userEmailId is properly escaped or validated before this point to prevent SQL injection
         $userEmailId = $this->db->real_escape_string($userEmailId);
 
-        $sql = "SELECT userNr FROM users WHERE userEmail = '{$userEmailId}'";
+        $sql = "SELECT userNr FROM user WHERE userID = '{$userEmailId}'";
         if ($result = $this->db->query($sql)) {
             if ($row = $result->fetch_assoc()) {
                 return $row['userNr'];
@@ -105,6 +105,11 @@ class CustomerMyAccount extends PanelModel
             case "changePassword":
                 $this->panelContent_1 = Form::form_password_change($this->pageID);
                 break;
+
+            case "myAccount":
+                $ordersResult= $this->getOrdersFromDb();
+                $this->displayOrderPanel1($ordersResult);                
+                break;
             default:
                 switch ($this->pageID) {
                     case "printOrderTable":
@@ -130,17 +135,17 @@ class CustomerMyAccount extends PanelModel
 
             // Prepare the SQL query
             $sql = "SELECT 
-rd.DishID, 
-rd.DishName, 
-rd.DishType, 
-rd.Price,
-o.OrderQuantity
-FROM 
-`order` o
-INNER JOIN 
-`restaurantdishes` rd ON o.Dish = rd.DishID
-WHERE 
-o.customer = $userNr";
+                    rd.DishID, 
+                    rd.DishName, 
+                    rd.DishType, 
+                    rd.Price,
+                    o.OrderQuantity
+                    FROM 
+                    `order` o
+                    INNER JOIN 
+                    `restaurantdishes` rd ON o.Dish = rd.DishID
+                    WHERE 
+                    o.customer = $userNr";
 
             // Execute the query
             $result = $this->db->query($sql);
@@ -150,6 +155,27 @@ o.customer = $userNr";
         }
 
 
+
+    public function displayOrderPanel1($result)
+    {
+        if ($result->num_rows > 0) {
+            // Initialize the panel content
+            $this->panelContent_2 = '<h2>Ordered Dishes Details:</h2>';
+
+            // Loop through each result and append details
+            while ($row = $result->fetch_assoc()) {
+                $this->panelContent_1 .= '<p>Dish with ID ' . $row['DishID'] . ':</p>';
+                $this->panelContent_1 .= '<ul>';
+                $this->panelContent_1 .= '<li>Name: ' . htmlspecialchars($row['DishName']) . '</li>';
+                $this->panelContent_1 .= '<li>Type: ' . htmlspecialchars($row['DishType']) . '</li>';
+                $this->panelContent_1 .= '<li>Price: $' . number_format($row['Price'], 2) . '</li>';
+                $this->panelContent_1 .= '<li>Quantity Ordered: ' . $row['OrderQuantity'] . '</li>'; // Display the order quantity
+                $this->panelContent_1 .= '</ul>';
+            }
+        } else {
+            $this->panelContent_1 = '<p>No dishes found for customer.</p>';
+        }
+    }
     public function displayOrder($result)
     {
         if ($result->num_rows > 0) {
