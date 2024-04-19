@@ -108,28 +108,10 @@ class CustomerMyAccount extends PanelModel
             default:
                 switch ($this->pageID) {
                     case "printOrderTable":
-                        // Get the user's email ID, then get their user number
-                        $userEmailId = $this->user->getUserID();  // Assuming this returns an email ID
-                        $userNr = $this->getUserNr($userEmailId);
-
-                        // Prepare the SQL query
-                        $sql = "SELECT 
-        rd.DishID, 
-        rd.DishName, 
-        rd.DishType, 
-        rd.Price,
-        o.OrderQuantity
-    FROM 
-        `order` o
-    INNER JOIN 
-        `restaurantdishes` rd ON o.Dish = rd.DishID
-    WHERE 
-        o.customer = $userNr";
-
                         try {
-                            // Execute the query
-                            $result = $this->db->query($sql);
-                           $this->displayOrder($result);
+                            // Get the user's email ID, then get their user number
+                            $ordersResult= $this->getOrdersFromDb();
+                            $this->displayOrder($ordersResult);
 
                             // Check if we have results
 
@@ -140,6 +122,33 @@ class CustomerMyAccount extends PanelModel
                 }
         } //end switch  
     }
+        public function getOrdersFromDb(){
+
+
+            $userEmailId = $this->user->getUserID();  // Assuming this returns an email ID
+            $userNr = $this->getUserNr($userEmailId);
+
+            // Prepare the SQL query
+            $sql = "SELECT 
+rd.DishID, 
+rd.DishName, 
+rd.DishType, 
+rd.Price,
+o.OrderQuantity
+FROM 
+`order` o
+INNER JOIN 
+`restaurantdishes` rd ON o.Dish = rd.DishID
+WHERE 
+o.customer = $userNr";
+
+            // Execute the query
+            $result = $this->db->query($sql);
+            return $result;
+
+
+        }
+
 
     public function displayOrder($result)
     {
