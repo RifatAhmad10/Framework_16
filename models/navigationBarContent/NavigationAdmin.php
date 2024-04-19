@@ -92,7 +92,7 @@ class NavigationAdmin implements NavigationInterface {
                     //home navigation
                     case "home":
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=manageUsers">Manage Users</a></li>';
-                        $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=viewDishes">View Dishes</a></li>';
+                        
                         $this->menuNav.= $dropdownMenuManageProducts;
                         $this->menuNav.='<li><a href="'.$_SERVER['PHP_SELF'].'?pageID=deleteDish">Delete Dishes</a></li>';
                         

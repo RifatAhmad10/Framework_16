@@ -268,9 +268,7 @@ $this->panelContent_2 = 'Error fetching dishes: ' . $e->getMessage();
      */
     public function setPanelContent_3()
     {
-        $menuTable = new MenuTable($this->db);
-        $rs = $menuTable->retrieveMenu();
-        $this->panelContent_3 .= HelperHTML::generateTABLE($rs);
+        
         ///"<p>To set up this application read the following <a href='readme/installation.php' target='_blank'>SETUP INSTRUCTIONS</a>.</p>";   
     }
 }

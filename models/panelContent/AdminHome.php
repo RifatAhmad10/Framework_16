@@ -46,11 +46,11 @@ class AdminHome extends PanelModel{
      * Set the Panel 1 heading 
      */
     public function setPanelHead_1(){
-            $this->panelHead_1='<h3>Web Application Framework</h3>';
+            $this->panelHead_1='<h3>Menu Items</h3>';
     }
     public function setPanelContent_1()
     {
-        $this->panelContent_1 = '<p>You are currently logged in as Customer.</p>';
+        $this->panelContent_1 = '<p>You are currently logged in as Admin.</p>';
         $menuTable = new MenuTable($this->db);
         $rs = $menuTable->retrieveMenu();
         $this->panelContent_1 .= HelperHTML::generateTABLE($rs);
@@ -61,7 +61,7 @@ class AdminHome extends PanelModel{
      */
     public function setPanelHead_2()
     {
-        $this->panelHead_2 = '<h3>Welcome to your Customer Home Page</h3>';
+        $this->panelHead_2 = '<h3>Search a Dish ID Page</h3>';
     }
 
     /**
@@ -98,55 +98,9 @@ class AdminHome extends PanelModel{
    
                     
 
-            if(isset($_POST["show_all"]))
-            {
-                $this->panelContent_2 .='<input type="hidden" name="chosen_items[]" value="'.$_POST["dish_id"].'">';
-            }
-
-            $this->panelContent_2 .= '<input type="submit" name="add_dish" value="Add">
-                </form>';
-        }
-
-        if(isset($_POST["add_dish"]))
-        {
-            // Handle adding the dish here
-            var_dump($_POST);
-
-            $this->panelContent_2 .= '<p>Dish with ID '.$_POST["add_dish_id"].' added successfully!</p>';
-            // array_push($_POST["chosen_items"], $_POST["add_dish_id"]);
-        }
-
-        if(isset($_POST["show_all"]))
-        {
-
-            if(isset($_POST["chosen_items"]))
-            {
-                $added_dish_ids = $_POST["chosen_items"]; // $this->retrieveAddedDishIDs();
-                $this->panelContent_2 .= '<h3>Added Dish IDs:</h3>';
-                $this->panelContent_2 .= '<ul>';
-                foreach($added_dish_ids as $dish_id)
-                {
-                    $this->panelContent_2 .= '<li>'.$dish_id.'</li>';
-                }
-                $this->panelContent_2 .= '</ul>';
-            }
+            
 
         }
-
-        $this->panelContent_2 .= '
-            <form action="index.php?pageID=home" method="POST">
-                <input type="submit" name="show_all" value="Show All">
-            </form>';
-    }
-
-    /**
-     * Retrieve added dish IDs from the database
-     */ 
-    private function retrieveAddedDishIDs() 
-    {
-        // Implement logic to retrieve added dish IDs from the database
-        // For demonstration purposes, returning a hardcoded array
-        return ['1', '2', '3', '4'];
     }
 
     /**
@@ -155,18 +109,12 @@ class AdminHome extends PanelModel{
     public function setPanelHead_3(){ 
         $this->panelHead_3='<h3>Application Setup</h3>'; 
     } 
-    
-    
+
      /**
      * Set the Panel 3 text content 
      */ 
     public function setPanelContent_3(){ 
             $this->panelContent_3='<p>To set up this application read the following <a href="readme/installation.php" target=”_blank” >SETUP INSTRUCTIONS</a></p>';            
-    }         
-
-
-
-     
-
+    }
 }
         

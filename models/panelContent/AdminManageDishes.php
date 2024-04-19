@@ -70,10 +70,10 @@ class AdminManageDishes extends PanelModel {
     public function setPanelContent_1() {
         switch ($this->pageID) {
             case "manageDishes":  // menu item handler
-                $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> menu item is under construction.";
+                $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> ";
                 break;
             case "viewDishes":  // menu item handler
-                $this->panelContent_1 = "Panel 1 content for \$pageID <b>$this->pageID</b> Here is a list of the menu items below.";
+                $this->panelContent_1 = " <b>$this->pageID</b> Here is a list of the menu items below.";
                  $menuTable = new MenuTable($this->db);
                 $rs = $menuTable->retrieveMenu();
                 $this->panelContent_1 .= HelperHTML::generateTABLE($rs);
