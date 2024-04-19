@@ -45,10 +45,10 @@ class ManagerHome extends PanelModel{
 }
 public function setPanelContent_1()
 {
-    $this->panelContent_1 = '<p>You are currently logged in as Admin.</p>';
+    $this->panelContent_1 = '<p>You are currently logged in as Manager.</p>';
     $menuTable = new MenuTable($this->db);
     $rs = $menuTable->retrieveMenu();
-    $this->panelContent_1 .= HelperHTML::generateTABLE($rs);
+    $this->panelContent_2 .= HelperHTML::generateTABLE($rs);
 }      
     /**
      * Set the Panel 2 heading 
